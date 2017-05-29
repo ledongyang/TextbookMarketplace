@@ -1,0 +1,36 @@
+{
+  "name": "textbook_marketplace",
+  "version": "1.0.0",
+  "description": "a web app where students can sell or buy used textbooks",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "textbooks",
+    "used",
+    "buy",
+    "sell",
+    "students"
+  ],
+  "author": "Michael Yang",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.58.0",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-session": "^1.15.3",
+    "geocoder": "^0.2.3",
+    "method-override": "^2.3.9",
+    "moment": "^2.18.1",
+    "mongoose": "^4.9.9",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0"
+  }
+}

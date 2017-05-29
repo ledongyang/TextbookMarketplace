@@ -1,0 +1,84 @@
+<% include ../partials/header %>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">Textbook Marketplace</p>
+            <!--<div class="list-group">-->
+            <!--    <li class="list-group-item active">Info 1</li>-->
+            <!--    <li class="list-group-item">Info 2</li>-->
+            <!--    <li class="list-group-item">Info 3</li>-->
+            <!--</div>-->
+            <div id="map"></div>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive" src="<%=textbook.image%>">
+                <div class="caption-full">
+                    <h4 class="pull-right">$<%= textbook.price %></h4>
+                    <a><h4><%=textbook.name%></h4></a>
+                    <p><%=textbook.description%></p>
+                    <p><em>Submitted by: <%= textbook.author.username %>, <%= moment(textbook.createdAt).fromNow() %></em></p>
+                    <% if(currentUser && textbook.author.id.equals(currentUser._id)){ %>
+                        <a class="btn btn-warning" href="/textbooks/<%=textbook._id%>/edit">Edit</a>
+                        <form class="delete-form" action="/textbooks/<%= textbook._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+            <div class="well">
+                <div class="text-right">
+                    <a class="btn btn-primary" href="/textbooks/<%=textbook._id%>/comments/new">Add new comment</a>
+                </div>
+                <hr>
+                <% textbook.comments.forEach(function(comment){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong><%= comment.author.username %></strong>
+                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                            <p>
+                                <%= comment.text %>
+                            </p>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                <a class="btn btn-warning btn-xs" href="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                                <form class="delete-form" action="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-xs btn-danger">Delete</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                <% }); %>
+            </div>
+        </div>
+    </div>
+   
+    <script>
+      function initMap() {
+        var lat = <%= textbook.lat %>;
+        var lng = <%= textbook.lng %>;
+        var center = {lat: lat, lng: lng };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: center,
+            scrollwheel: false
+        });
+        var contentString = `
+          <strong><%= textbook.name %><br />
+          <%= textbook.location %></strong>
+          <p><%= textbook.description %></p>
+        `
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcIYRrcBea3qaLDeE5aIzKL770OJvWFz0&callback=initMap"></script>
+<%include ../partials/footer %>
