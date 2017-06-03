@@ -1,5 +1,4 @@
 <% include ../partials/header %>
-
     <div class="row">
         <div class="col-md-3">
             <p class="lead">Textbook Marketplace</p>
@@ -31,27 +30,47 @@
                     <a class="btn btn-primary" href="/textbooks/<%=textbook._id%>/comments/new">Add new comment</a>
                 </div>
                 <hr>
-                <% textbook.comments.forEach(function(comment){ %>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <strong><%= comment.author.username %></strong>
-                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
-                            <p>
-                                <%= comment.text %>
-                            </p>
-                            <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
-                                <a class="btn btn-warning btn-xs" href="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>/edit">Edit</a>
-                                <form class="delete-form" action="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                    <button class="btn btn-xs btn-danger">Delete</button>
-                                </form>
-                            <% } %>
-                        </div>
-                    </div>
-                    
-                <% }); %>
+                <%
+                    iter_comment(rootComments, textbook, moment, currentUser);
+                %>
             </div>
         </div>
     </div>
+       
+   <%
+       function iter_comment(parentComments, textbook, moment, currentUser){
+           parentComments.forEach(function(comment){
+              showComment(comment, textbook, moment, currentUser);
+              if(comment.replies==null){
+                  return;
+              }else{
+                  
+                  iter_comment(comment.replies, textbook, moment, currentUser);
+              }
+           });
+       }
+   %>
+   <% function showComment(comment, textbook, moment, currentUser){ %>
+       <div class="row">
+            <div class="col-md-12" style="padding-left:<%= (comment.ancestorIds.length-1)*50+10 %>px">
+                <strong><%= comment.author.username %></strong>
+                <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                <p>
+                    <%= comment.text %>
+                </p>
+                <a class="btn btn-primary btn-xs" href="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>/new">Reply</a>
+                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                    <div class="text-right">
+                        <a class="btn btn-warning btn-xs" href="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                        <form class="delete-form" action="/textbooks/<%=textbook._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
+                    </div>
+                <% } %>
+                <hr>
+            </div>
+        </div>
+    <% } %>
    
     <script>
       function initMap() {

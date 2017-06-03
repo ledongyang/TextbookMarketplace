@@ -3,12 +3,13 @@
     <head>
         <title>Textbook Marketplace</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/stylesheets/landing.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
     </head>
     <body>
         
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Textbook Marketplace</a>
@@ -16,8 +17,8 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <% if(!currentUser){ %>
-                        <li><a href="/register">Sign Up</a></li>
-                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Sign Up <i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
+                        <li><a href="/login">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
                     <% }else{ %>
                         <li><a href="#">Welcome <%= currentUser.username %></a></li>
                         <li><a href="/logout">Logout</a></li>
@@ -41,8 +42,8 @@
     </div>
     
     <div id="landing-header">
- 		<h1>Welcome to Textbook Marketplace!</h1>
-		<a href="/textbooks" class="btn btn-lg btn-success">View All Textbooks</a>
+ 		<h1><span class="label label-primary"><i class="fa fa-book" aria-hidden="true"></i> Welcome to Textbook Marketplace!</span></h3>
+		<a href="/textbooks" class="btn btn-lg btn-primary">View All Textbooks</a>
     </div>
     
     <ul class="slideshow">
@@ -52,3 +53,4 @@
       <li></li>
       <li></li>
     </ul>
+    

@@ -17,6 +17,7 @@
   "author": "Michael Yang",
   "license": "ISC",
   "dependencies": {
+    "async-foreach": "^0.1.3",
     "aws-sdk": "^2.58.0",
     "body-parser": "^1.17.1",
     "connect-flash": "^0.1.1",

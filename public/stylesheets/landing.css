@@ -6,6 +6,16 @@ nav{
     z-index:1;
 }
 
+.navbar-inverse{
+	background-color: #213a60;
+}
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
+}
+
 #landing-header {
   z-index: 1;
   position: relative;
@@ -14,7 +24,8 @@ nav{
 }
 
 #landing-header h1 {
-  color: #fff;
+  font-size: 40px;
+  color: white;
 }
 
 .slideshow { 
@@ -44,22 +55,22 @@ nav{
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(http://i.imgur.com/K3mPv14.jpg) 
+  background-image: url(https://source.unsplash.com/OQSCtabGkSY) 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(http://i.imgur.com/SBEmFpv.jpg);
+  background-image: url(https://source.unsplash.com/cJCQKSP2WC4);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(http://i.imgur.com/emvhOnb.jpg);
+  background-image: url(https://source.unsplash.com/9BoqXzEeQqM);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(http://i.imgur.com/2LSMCmJ.jpg);
+  background-image: url(https://source.unsplash.com/w8JiSVyjy-8);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(http://i.imgur.com/TVGe0Ef.jpg);
+  background-image: url(https://source.unsplash.com/082dCXNKfxU);
   animation-delay: 40s; 
 }
 

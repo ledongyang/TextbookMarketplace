@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+    <div class="div">
+        <h1 class="form-title">Reply to <%=comment.text%>:</h1>
+        <div class="comment-form">
+            <form action="/textbooks/<%=textbook_id%>/comments/<%=comment._id%>" method="POST">
+                <div class="form-group">
+                    <label>Comment:</label>
+                    <input class="form-control" type="text" name="comment[text]">
+                </div>
+                <button class="btn btn-primary btn-block">Submit!</button>
+            </form>
+            <a href="/textbooks/<%=textbook_id%>">Go Back</a>
+        </div>
+    </div>
+    
+<% include ../partials/footer %>

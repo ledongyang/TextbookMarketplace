@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var Comment = require("../models/comment");
 var Textbook = require("../models/textbook");
 var middleware = require("../middleware");
 var geocoder = require("geocoder");
@@ -79,8 +80,69 @@ router.get("/:id", function(req, res){
         if(err){
             req.flash("error",err.message);
             res.redirect("/textbooks");
+        }else if(foundTextbook.comments.length==0){
+            res.render("textbooks/show",{textbook:foundTextbook, rootComments:[]});
         }else{
-            res.render("textbooks/show",{textbook:foundTextbook});
+            Comment.find({postId:foundTextbook._id, parentId:null}, function(err, rootComments){
+                
+                if(err){
+                    console.log(err);
+                }else{
+                    var rootCommentsArr=[];
+                    rootComments.forEach(function(rootComment){
+                        Comment.find({ancestorIds:rootComment._id}, function(err, thread){
+                           if(err){
+                               console.log(err);
+                           } else{
+                                var sort = function (a, b) {
+                                  if (a.ancestorIds.length < b.ancestorIds.length) {
+                                    return 1;
+                                  }
+                                  if (a.ancestorIds.length > b.ancestorIds.length) {
+                                    return -1;
+                                  }
+                                  
+                                  if(a.createdAt > b.createdAt){
+                                      return 1;
+                                  }
+                                  
+                                  if(a.createdAt < b.createdAt){
+                                      return -1;
+                                  }
+                                  // a must be equal to b
+                                  return 0;
+                                };
+                                thread.sort(sort);
+                                
+                                thread.forEach(function(comment){
+                                   if(comment.ancestorIds.length>1){
+                                       var parentComment = thread.find(function(obj){
+                                           return obj._id.equals(comment.parentId);
+                                       });
+                                       
+                                       if(parentComment){
+                                            if (!parentComment.replies) {
+                                                parentComment.replies = [];
+                                            }
+                                            parentComment.replies.push(comment);
+                                       }else{
+                                           console.log("Broken reply chain.");
+                                       }
+                                   } 
+                                });
+                                rootCommentsArr.push(thread[thread.length-1]);
+                                
+                                if(rootComments.length==rootCommentsArr.length){
+                                    rootCommentsArr.sort({"createdAt":1});
+                                    res.render("textbooks/show",{textbook:foundTextbook, rootComments:rootCommentsArr});
+                                }
+                                
+                           }
+                        });
+                    });
+                    
+                }
+            });
         }
     })
 });
@@ -126,13 +188,20 @@ router.put("/:id", middleware.checkTextbookOwnership, function(req, res){
 
 //delete route
 router.delete("/:id", middleware.checkTextbookOwnership, function(req, res){
-   Textbook.findByIdAndRemove(req.params.id, function(err){
+   Textbook.findByIdAndRemove(req.params.id, function(err, textbook){
      if(err){
          req.flash("error",err.message);
          res.redirect("/textbooks");
      }  else{
-         req.flash("success","Successfully deleted a textbook!");
-         res.redirect("/textbooks");
+         //delete all post comments
+         Comment.find({postId:textbook._id}).remove(function(err){
+             if(err){
+                 console.log(err);
+             }else{
+                 req.flash("success","Successfully deleted a textbook!");
+                 res.redirect("/textbooks");
+             }
+         });
      }
    });
 });

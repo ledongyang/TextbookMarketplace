@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/stylesheets/main.css">
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -25,8 +25,8 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if(!currentUser){ %>
-                            <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
-                            <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
+                            <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up <i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
+                            <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
                         <% }else{ %>
                             <li><a href="#">Welcome <%= currentUser.username %></a></li>
                             <li><a href="/logout">Logout</a></li>
